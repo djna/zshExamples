@@ -1,0 +1,8 @@
+
+echo "initialising $0"
+
+function writelog(){
+    echo "Log: $@"
+}
+
+writelog "$@"
