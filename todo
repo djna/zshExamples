@@ -7,5 +7,8 @@ autoload -U ${fpath[1]}/*(:t)
 
 writelog "$0 running in $(ps -o args= -p $$ )"
 
+while IFS=, read -r action when_recorded assigned_to dependency; do 
+    echo "action $action, when $when_recorded, assignee $assigned_to, dependency $dependency"; 
+done < data/pending
 
 
