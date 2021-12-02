@@ -1,8 +1,5 @@
 
 echo "initialising $0"
 
-function writelog(){
-    echo "Log: $@"
-}
+echo "Log: $@"
 
-writelog "$@"

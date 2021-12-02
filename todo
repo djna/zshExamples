@@ -7,8 +7,19 @@ autoload -U ${fpath[1]}/*(:t)
 
 writelog "$0 running in $(ps -o args= -p $$ )"
 
-while IFS=, read -r action when_recorded assigned_to dependency; do 
-    echo "action $action, when $when_recorded, assignee $assigned_to, dependency $dependency"; 
-done < data/pending
+typeset -i badcount=0
+typeset -i goodcount=0
+while IFS=, read -r recorded action fmt_recorded assigned_to dependency; do 
+    if /bin/test -n "$action"  && /bin/test -n "$recorded" ; then
+        echo "$recorded,$action,$fmt_recorded,$assigned_to,$dependency" 
+        ((goodcount++))
+    else
+        ((badcount++))
+    fi
+done < data/*.csv
+
+
+echo "Bad line count $badcount"
+echo "Good line count $goodcount"
 
 

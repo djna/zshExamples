@@ -1,0 +1,37 @@
+#!/bin/zsh
+
+fpath=(./zshfunctions $fpath)
+echo "loading functions from $fpath"
+
+autoload -U ${fpath[1]}/*(:t)
+
+APP="${0:t:r}"
+writelog "$APP running in $(ps -o args= -p $$ )"
+
+function displayMenu() {
+    clear
+    echo "$APP actions: List, Add, Quit"
+}
+
+while [ true ]
+do
+    displayMenu
+
+    read "ACTION?Action "
+
+    case "$ACTION" in
+        [qQ]|[qQ]uit)
+            read -q "CONFIRM?Quit? (y/n) " CONFIRM
+            if [[ "$CONFIRM" == "y" ]]; then 
+                echo "\n\n${0:t} terminating on request\n\n"
+                exit 0; 
+            else
+                continue
+            fi
+            ;;
+        *)
+            echo "Unknown Action $ACTION"
+            sleep 1
+    esac
+done
+
