@@ -1,0 +1,16 @@
+#!/bin/zsh
+
+# Process logs
+#
+# Summarise statistics for current set of logs in input directory 
+# Write report to a file in reports directory
+#
+# Move any defective files to badFiles directory
+#
+# Move successfully processed files to processedFiles directory
+
+
+
+
+
+
