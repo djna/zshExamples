@@ -16,12 +16,15 @@ export INPUT_DIR=data/input
 export BAD_DIR=data/badFiles
 export GOOD_DIR=data/processedFiles
 
+export REPORT_FILE=data/reports/branchReport.$(date +%s).txt
+
 
 # tolerate empty input dir
 theList=($INPUT_DIR/*(N))
 
 typeset -i badCount=0
 typeset -i fileCount=0
+typeset -A branchTotals 
 
 # check whether $1 is an integer
 function intCheck() {
@@ -40,28 +43,38 @@ function intCheck() {
 
 for logFile in $theList; do
     ((fileCount++))
+    local IFS=,
     read branch count < $logFile
-    echo "$logFile :$branch: :$count:"
+    # echo "$logFile :$branch: :$count:"
     if [ -z "$branch" ] || [ -z "$count" ]; then
         echo "Invalid record in $logFile" >&2
         mv $logFile $BAD_DIR
         ((badCount++))
-    fi
     
-    if intCheck "$count"; then
-        echo "$branch has $count"
+    elif intCheck "$count"; then
+        #echo "$branch has $count"
+
+        currentTotal="${branchTotals[$branch]:=0}"
+        #echo "Current $currentTotal"
+        (( currentTotal += count ))
+        branchTotals[$branch]=$currentTotal
+
         mv $logFile $GOOD_DIR
     else 
         echo "Invalid count in $logFile" >&2
         mv $logFile $BAD_DIR
         ((badCount++))
     fi
-    
+ 
 done
 
-echo "Processed $fileCount files, $badCount were bad"
+echo "Processed $fileCount files, $badCount were bad"  >$REPORT_FILE
 
+for branch total in ${(kv)branchTotals}; do
+    echo "$branch=$total"
+done >>$REPORT_FILE
 
+echo "Created report $REPORT_FILE for $#branchTotals branches"
 
 
 
