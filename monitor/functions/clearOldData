@@ -12,12 +12,14 @@ setopt rmstarsilent
 DATADIR=data
 
 echo "Before"
-find $DATADIR/reports $DATADIR/badFiles -ls
+find $DATADIR -ls
 
 rm -f $DATADIR/input/*.log
 rm -f $DATADIR/reports/*.txt
 rm -f $DATADIR/badFiles/*.log
+rm -f $DATADIR/processedFiles/*.log
 
 echo "\nAfter"
-find $DATADIR/input $DATADIR/reports $DATADIR/badFiles -ls
+#find $DATADIR/input $DATADIR/reports $DATADIR/badFiles $DATAFIR/processedFiles -ls
+find $DATADIR -ls
 
