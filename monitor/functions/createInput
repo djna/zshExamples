@@ -30,8 +30,8 @@ while IFS=, read branch count; do
 
     if [[ -n "$branch" ]] && [[ -n "$count" ]] ; then 
         echo ":$branch: has :$count:"
-        now=$(date +%s)
-        echo "$branch, $count" > "$DATADIR/input/$branch.$now.log"
+        # allows for several files per branch
+        echo "$branch, $count" > "$DATADIR/input/$branch.$lineCount.log"
     else
         (( badCount++ ))
         echo "bad line $linecount"
