@@ -71,7 +71,7 @@ done
 echo "Processed $fileCount files, $badCount were bad"  >$REPORT_FILE
 
 for branch total in ${(kv)branchTotals}; do
-    echo "$branch=$total"
+    echo "$branch $total"
 done >>$REPORT_FILE
 
 echo "Created report $REPORT_FILE for $#branchTotals branches"
