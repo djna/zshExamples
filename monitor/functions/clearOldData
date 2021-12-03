@@ -1,0 +1,23 @@
+
+# clear the output directories
+
+# -L option changes are local to this functions
+# -R reset to defaults
+emulate -LR zsh
+
+# don't warn about emoty directories or rm *
+setopt nullglob
+setopt rmstarsilent
+
+DATADIR=data
+
+echo "Before"
+find $DATADIR/reports $DATADIR/badFiles -ls
+
+rm -f $DATADIR/input/*.log
+rm -f $DATADIR/reports/*.txt
+rm -f $DATADIR/badFiles/*.log
+
+echo "\nAfter"
+find $DATADIR/input $DATADIR/reports $DATADIR/badFiles -ls
+

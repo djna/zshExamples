@@ -1,0 +1,45 @@
+
+
+# create some individual input files from an easy-to-edit list
+
+# -L option changes are local to this functions
+# -R reset to defaults
+emulate -LR zsh
+
+# don't warn about emoty directories or rm *
+setopt nullglob
+setopt rmstarsilent
+
+DATADIR=data
+
+local SRC=${1:="$DATADIR/sampleInput.txt"}
+
+if [[ ! -f "$SRC" ]]; then
+    echo "Date source $SRC not found."
+    return 1
+fi
+
+
+echo "Loading from $SRC"
+
+typeset -i lineCount=0
+typeset -i badCount=0
+
+while IFS=, read branch count; do
+    (( lineCount++ ))
+
+    if [[ -n "$branch" ]] && [[ -n "count" ]] ; then 
+        echo "$branch has $count"
+        now=$(date +%s)
+        echo "$branch, $count" > "$DATADIR/input/$branch.$now.log"
+    else
+        (( badCount++ ))
+        echo "bad line $linecount"
+    fi
+done < $SRC
+
+echo "Read $linceCount lines from $SRC, $badCount were invalid"
+
+ls -lrt $DATADIR/input
+
+

@@ -1,0 +1,22 @@
+#!/bin/zsh
+
+# Reset file monitor
+# Clears down output directories and creates a new set of inout files.
+
+
+fpath=(./functions $fpath)
+echo "loading functions from $fpath"
+
+autoload -U ${fpath[1]}/*(:t)
+
+echo "Removing old output and creating fresh set of input data ... "
+
+if clearOldData && createInput; then
+    echo "... complete."
+else
+    echo "... Failed!"
+fi
+
+
+
+
