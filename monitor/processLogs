@@ -8,7 +8,58 @@
 # Move any defective files to badFiles directory
 #
 # Move successfully processed files to processedFiles directory
+#
 
+
+
+export INPUT_DIR=data/input
+export BAD_DIR=data/badFiles
+export GOOD_DIR=data/processedFiles
+
+
+# tolerate empty input dir
+theList=($INPUT_DIR/*(N))
+
+typeset -i badCount=0
+typeset -i fileCount=0
+
+# check whether $1 is an integer
+function intCheck() {
+    
+    typeset -i branchCount
+    # attemot assignment, discard eeor message, if success will echo value
+    check=$(branchCount="$1" && echo "$branchCount" ) 2>/dev/null
+    
+    # if we got a non null valuem assignment worked
+    if  [[ -n "$check" ]]; then 
+        return 0
+    else
+        return 1
+    fi
+}
+
+for logFile in $theList; do
+    ((fileCount++))
+    read branch count < $logFile
+    echo "$logFile :$branch: :$count:"
+    if [ -z "$branch" ] || [ -z "$count" ]; then
+        echo "Invalid record in $logFile" >&2
+        mv $logFile $BAD_DIR
+        ((badCount++))
+    fi
+    
+    if intCheck "$count"; then
+        echo "$branch has $count"
+        mv $logFile $GOOD_DIR
+    else 
+        echo "Invalid count in $logFile" >&2
+        mv $logFile $BAD_DIR
+        ((badCount++))
+    fi
+    
+done
+
+echo "Processed $fileCount files, $badCount were bad"
 
 
 
