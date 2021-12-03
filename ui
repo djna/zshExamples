@@ -13,14 +13,46 @@ function displayMenu() {
     echo "$APP actions: List, Add, Quit"
 }
 
+function listTodo() {
+    while IFS=, read -r recorded action fmt_recorded assigned_to dependency; do 
+        if [[ -n "$action" ]]  && [[ -n "$recorded" ]] ; then
+            echo "$recorded,$action,$fmt_recorded,$assigned_to,$dependency" 
+            ((goodcount++))
+        else
+            ((badcount++))
+        fi
+    done < data/*.csv
+
+    echo "Bad line count $badcount"
+    echo "Good line count $goodcount"
+
+    read "ACTION?Action "
+    return 0
+}
+
+function addTodo() {
+
+    read "TODO?Todo Text (empty to return to menu) "
+    CLEAN_TODO=$(echo "$TODO" | tr -s -c "[:alnum:]" " ")
+set -x
+    if [[ -z "$CLEAN_TODO" ]]; then
+      echo "No Todo text provided"
+      sleep 1000
+      return
+    fi
+    
+    NOW="date +%s"
+    echo "$NOW,$CLEAN_TODO" > data/"$NOW".csv
+}
+
 while [ true ]
 do
     displayMenu
 
     read "ACTION?Action "
 
-    case "$ACTION" in
-        [qQ]|[qQ]uit)
+    case "${ACTION:u}" in
+        Q|[Q]UIT)
             read -q "CONFIRM?Quit? (y/n) " CONFIRM
             if [[ "$CONFIRM" == "y" ]]; then 
                 echo "\n\n${0:t} terminating on request\n\n"
@@ -28,6 +60,12 @@ do
             else
                 continue
             fi
+            ;;
+        [A]|[A]addj)
+            addTodo
+            ;;
+        [L]|[L]IST)
+            listTodo
             ;;
         *)
             echo "Unknown Action $ACTION"
