@@ -28,8 +28,8 @@ typeset -i badCount=0
 while IFS=, read branch count; do
     (( lineCount++ ))
 
-    if [[ -n "$branch" ]] && [[ -n "count" ]] ; then 
-        echo "$branch has $count"
+    if [[ -n "$branch" ]] && [[ -n "$count" ]] ; then 
+        echo ":$branch: has :$count:"
         now=$(date +%s)
         echo "$branch, $count" > "$DATADIR/input/$branch.$now.log"
     else
