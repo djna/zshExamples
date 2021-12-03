@@ -1,8 +1,6 @@
 
-echo "initialising $0"
+# Example zsh function, log a message
+# Note: basic zsh style, no explicit function definition
 
-function writelog(){
-    echo "Log: $@"
-}
+    echo "${0:t:r} $@"
 
-writelog "$@"
