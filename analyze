@@ -1,0 +1,6 @@
+#!/bin/ksh
+
+filename=${1:?specify a filename}
+
+echo "processing $filename"
+
