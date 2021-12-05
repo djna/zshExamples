@@ -12,12 +12,17 @@
 
 
 
-export INPUT_DIR=data/input
-export BAD_DIR=data/badFiles
-export GOOD_DIR=data/processedFiles
+INPUT_DIR=data/input
+REPORT_DIR=data/reports
+BAD_DIR=data/badFiles
+GOOD_DIR=data/processedFiles
 
-export REPORT_FILE=data/reports/branchReport.$(date +%s).txt
+for dir in $INPUT_DIR $REPORT_DIR $BAD_DIR $GOOD_DIR
+if [[ ! -d "$dir" ]]; then
+    mkdir "$dir"
+fi
 
+export REPORT_FILE=$REPORT_DIR/branchReport.$(date +%s).txt
 
 # tolerate empty input dir
 theList=($INPUT_DIR/*(N))
@@ -34,11 +39,9 @@ function intCheck() {
     check=$(branchCount="$1" && echo "$branchCount" ) 2>/dev/null
     
     # if we got a non null valuem assignment worked
-    if  [[ -n "$check" ]]; then 
-        return 0
-    else
-        return 1
-    fi
+    test -n "$check"
+
+    # returns exit code of last command
 }
 
 for logFile in $theList; do
@@ -58,7 +61,6 @@ for logFile in $theList; do
         #echo "Current $currentTotal"
         (( currentTotal += count ))
         branchTotals[$branch]=$currentTotal
-
         mv $logFile $GOOD_DIR
     else 
         echo "Invalid count in $logFile" >&2
