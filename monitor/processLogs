@@ -30,7 +30,7 @@ typeset -A branchTotals
 function intCheck() {
     
     typeset -i branchCount
-    # attemot assignment, discard eeor message, if success will echo value
+    # attemot assignment, discard error message, if success will echo value
     check=$(branchCount="$1" && echo "$branchCount" ) 2>/dev/null
     
     # if we got a non null valuem assignment worked
