@@ -19,6 +19,9 @@ if [[ ! -f "$SRC" ]]; then
     return 1
 fi
 
+if [[ ! -d $DATADIR/input ]]; then
+    mkdir $DATADIR/input
+fi
 
 echo "Loading from $SRC"
 
@@ -38,7 +41,7 @@ while IFS=, read branch count; do
     fi
 done < $SRC
 
-echo "Read $linceCount lines from $SRC, $badCount were invalid"
+echo "Read $lineCount lines from $SRC, $badCount were invalid"
 
 ls -lrt $DATADIR/input
 
