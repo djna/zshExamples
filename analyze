@@ -4,3 +4,9 @@ filename=${1:?specify a filename}
 
 echo "processing $filename"
 
+
+cat $filename | tr '[:upper:]' '[:lower:]' | grep -oE "[a-z\']{2,}"  | sort | grep -Fvwf stopwords | uniq -c | sort -nr | head -15
+
+
+
+
