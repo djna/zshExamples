@@ -1,0 +1,154 @@
+#!/bin/zsh
+
+fpath=(./functions $fpath)
+echo "loading functions from $fpath"
+
+autoload -U ${fpath[1]}/*(:t)
+
+APP="${0:t:r}"
+LAST_ERR=""
+ 
+message "$APP running in $(ps -o args= -p $$ )"
+
+function displayMenu() {
+    clear
+    echo "$APP actions: List, Add, Quit"
+}
+
+function showPageOfEntries() {
+    local -i offset=${1:=0}
+    local -i pageLength=${2:=3}
+
+    # displaying items with labels starting at 1
+    local -i currentIndex=1;
+
+    # goodCount is global so we can paginate
+    local -i badCount=0
+
+    echo
+    
+    local -i stopAt
+    (( stopAt = offset + pageLength ))
+    #while IFS=, read -r id text; do 
+    #    if [[ -n "$id" ]]  && [[ -n "$text" ]] ; then 
+    #        lineTable[$currentIndex]=$id
+    #        if [[ $currentIndex -gt $offset ]] && 
+    #           [[ $currentIndex -le $stopAt ]] ; then                 
+    #                echo "$currentIndex $text"  
+    #        fi
+    #        ((currentIndex++))
+    #        ((goodCount++))
+    #    else
+    #        ((badCount++))
+    #    fi
+    #done 
+
+    
+    local -i lastIndex
+    local -i firstIndex
+
+    (( firstIndex = offset + 1))
+    (( lastIndex = offset + pageLength ))
+    if [[ lastIndex -gt goodCount ]]; then
+        lastIndex=$goodCount
+    fi
+    echo "\nDisplaying $firstIndex to $lastIndex of $goodCount, discarding $badCount records\n"
+
+ 
+}
+
+function listEntries() {
+    # a table mapping displayed rown numbers to record identifiers
+    # ordinary arrays have first index 1
+    local -A lineTable
+  
+    entryFiles=( data/*.csv(N) )
+    if [[ $#entryFiles -eq 0 ]]; then
+         LAST_ERR="Diary empty. "
+         return 0
+    fi
+
+    local -i listOffset=0
+    local -i pageLength=3
+    local -i goodCount
+    showPageOfEntries $listOffset $pageLength <  $entryFiles
+
+    local -i ID
+    local ACTION=""
+    while [[ true ]]; do
+        read "ACTION?$LIST_ERR Action ID (empty to return to menu) "
+        LIST_ERR=""
+
+        if [[ -z "$ACTION" ]]; then
+            return
+        fi
+
+        case "${ACTION:u}" in
+            H|HISTORY)
+                showHistory "$ID"
+                ;;
+            A|ADD)
+                addHistory "$ID"
+                ;;
+            N|NEXT|\+)
+                
+                if [[ (( listOffset + pageLength )) -le goodCount ]]; then
+                   (( listOffset += pageLength ))
+                   showPageOfEntries $listOffset $pageLength <  $entryFiles
+                else 
+                   LIST_ERR="no more ... "
+                fi
+                ;;
+            B|BACK|\-)
+                (( listOffset -= pageLength ))
+                showPageOfEntries $listOffset $pageLength <  $entryFiles
+                ;;
+            *)
+                LAST_ERR="Unknown Action $ACTION"
+                ;
+        esac;       
+    done
+       
+}
+
+function addEntry() {
+
+    read "TODO?Todo Text (empty to return to menu) "
+    CLEAN_TODO=$(echo "$TODO" | tr -s -c "[:alnum:]" " ")
+
+    if [[ -z "$CLEAN_TODO" ]]; then
+      return
+    fi
+    
+    NOW=$(date +%s)
+    echo "$NOW,$CLEAN_TODO" > data/"$NOW".csv
+}
+
+while [ true ]
+do
+    displayMenu
+
+    read "ACTION?${LAST_ERR}Action "
+    LAST_ERR=""
+
+    case "${ACTION:u}" in
+        Q|QUIT)
+            read -q "CONFIRM?Quit? (y/n) " CONFIRM
+            if [[ "$CONFIRM" = "y" ]]; then 
+                echo "\n\n${0:t} terminating on request\n\n"
+                exit 0 
+            else
+                continue
+            fi
+            ;;
+        A|ADD)
+            addEntry
+            ;;
+        L|LIST)
+            listEntries
+            ;;
+        *)
+            LAST_ERR="Unknown Action $ACTION "
+    esac
+done
+
