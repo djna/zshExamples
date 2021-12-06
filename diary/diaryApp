@@ -23,25 +23,26 @@ function showPageOfEntries() {
     local -i currentIndex=1;
 
     # goodCount is global so we can paginate
+    goodCount=0
     local -i badCount=0
 
     echo
     
     local -i stopAt
     (( stopAt = offset + pageLength ))
-    #while IFS=, read -r id text; do 
-    #    if [[ -n "$id" ]]  && [[ -n "$text" ]] ; then 
-    #        lineTable[$currentIndex]=$id
-    #        if [[ $currentIndex -gt $offset ]] && 
-    #           [[ $currentIndex -le $stopAt ]] ; then                 
-    #                echo "$currentIndex $text"  
-    #        fi
-    #        ((currentIndex++))
-    #        ((goodCount++))
-    #    else
-    #        ((badCount++))
-    #    fi
-    #done 
+    while IFS=, read -r id text; do 
+        if [[ -n "$id" ]]  && [[ -n "$text" ]] ; then 
+            lineTable[$currentIndex]=$id
+            if [[ $currentIndex -gt $offset ]] && 
+               [[ $currentIndex -le $stopAt ]] ; then                 
+                    echo "$currentIndex $text"  
+            fi
+            ((currentIndex++))
+            ((goodCount++))
+        else
+            ((badCount++))
+        fi
+    done 
 
     
     local -i lastIndex
@@ -76,7 +77,7 @@ function listEntries() {
     local -i ID
     local ACTION=""
     while [[ true ]]; do
-        read "ACTION?$LIST_ERR Action ID (empty to return to menu) "
+        read "ACTION?${LIST_ERR}Action ID (empty to return to menu) "
         LIST_ERR=""
 
         if [[ -z "$ACTION" ]]; then
@@ -91,9 +92,10 @@ function listEntries() {
                 addHistory "$ID"
                 ;;
             N|NEXT|\+)
-                
-                if [[ (( listOffset + pageLength )) -le goodCount ]]; then
-                   (( listOffset += pageLength ))
+                local -i nextOffset
+                (( nextOffset = listOffset + pageLength ))
+                if [[  $nextOffset -le $goodCount ]]; then
+                   listOffset=$nextOffset
                    showPageOfEntries $listOffset $pageLength <  $entryFiles
                 else 
                    LIST_ERR="no more ... "
@@ -101,6 +103,10 @@ function listEntries() {
                 ;;
             B|BACK|\-)
                 (( listOffset -= pageLength ))
+                if [[ $listOffset -lt 0 ]]; then
+                   LIST_ERR="at top ... "
+                   listOffset=0
+                fi
                 showPageOfEntries $listOffset $pageLength <  $entryFiles
                 ;;
             *)
