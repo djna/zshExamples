@@ -6,12 +6,12 @@ echo "loading functions from $fpath"
 autoload -U ${fpath[1]}/*(:t)
 
 APP="${0:t:r}"
-LAST_ERR=""
+MAIN_ERR=""
  
 message "$APP running in $(ps -o args= -p $$ )"
 
 function displayMenu() {
-    clear
+    #clear
     echo "$APP actions: List, Add, Quit"
 }
 
@@ -55,17 +55,73 @@ function showPageOfEntries() {
     fi
     echo "\nDisplaying $firstIndex to $lastIndex of $goodCount, discarding $badCount records\n"
 
- 
 }
 
+
+
+function showMemos() {
+  
+    local -i itemIndex="$1"
+    
+    if [[ $itemIndex -eq 0 ]]; then
+        LIST_ERR="specify item id in range 1 to $goodCount. Add <id>"
+        return 1
+    fi
+    
+    local itemId="$lineTable[$itemIndex]"
+
+    if [[ -z "$itemId"  ]]; then
+        LIST_ERR="Item id $itemIndex not recognised"
+        return 1
+    fi
+
+    IFS=, read -r id text < data/${itemId}.csv
+    local added=$(date -r "$id")
+    echo "Memo for to $text (record created $added $text)"
+    cat data/memos/$itemId
+    
+}
+
+function addMemo() {
+  
+    local -i itemIndex="$1"
+    
+    if [[ $itemIndex -eq 0 ]]; then
+        LIST_ERR="specify item id in range 1 to $goodCount. Add <id>"
+        return 1
+    fi
+    
+    local itemId="$lineTable[$itemIndex]"
+
+    if [[ -z "$itemId"  ]]; then
+        LIST_ERR="Item id $itemIndex not recognised"
+        return 1
+    fi
+
+    IFS=, read -r id text < data/${itemId}.csv
+    local added=$(date -r "$id")
+    echo "Memo for to $text (record created $added)"
+    
+    read "MEMO?Memo Text (empty to return to menu) "
+    if [[ -z "$MEMO" ]]; then
+      return
+    fi
+    
+    echo "$MEMO" >> data/memos/$itemId
+    
+}
+
+
+
 function listEntries() {
+    local LIST_ERR=""
     # a table mapping displayed rown numbers to record identifiers
     # ordinary arrays have first index 1
     local -A lineTable
   
     entryFiles=( data/*.csv(N) )
     if [[ $#entryFiles -eq 0 ]]; then
-         LAST_ERR="Diary empty. "
+         MAIN_ERR="Diary empty. "
          return 0
     fi
 
@@ -77,19 +133,21 @@ function listEntries() {
     local -i ID
     local ACTION=""
     while [[ true ]]; do
-        read "ACTION?${LIST_ERR}Action ID (empty to return to menu) "
+        read -A "inArray?${LIST_ERR}Action ID (empty to return to main menu) "
         LIST_ERR=""
-
+        ACTION="$inArray[1]"
+        ID="$inArray[2]"
+     
         if [[ -z "$ACTION" ]]; then
             return
         fi
 
         case "${ACTION:u}" in
-            H|HISTORY)
-                showHistory "$ID"
+            M|MEMOES)
+                showMemos "$ID"
                 ;;
-            A|ADD)
-                addHistory "$ID"
+            A|ADD)              
+                addMemo "$ID"
                 ;;
             N|NEXT|\+)
                 local -i nextOffset
@@ -110,7 +168,7 @@ function listEntries() {
                 showPageOfEntries $listOffset $pageLength <  $entryFiles
                 ;;
             *)
-                LAST_ERR="Unknown Action $ACTION"
+                MAIN_ERR="Unknown Action $ACTION"
                 ;
         esac;       
     done
@@ -130,12 +188,21 @@ function addEntry() {
     echo "$NOW,$CLEAN_TODO" > data/"$NOW".csv
 }
 
+
+if [[ ! -d data ]]; then
+    mkdir data
+fi
+
+if [[ ! -d data/memos ]]; then
+    mkdir data/memos
+fi
+
 while [ true ]
 do
     displayMenu
 
-    read "ACTION?${LAST_ERR}Action "
-    LAST_ERR=""
+    read "ACTION?${MAIN_ERR}Action "
+    MAIN_ERR=""
 
     case "${ACTION:u}" in
         Q|QUIT)
@@ -154,7 +221,7 @@ do
             listEntries
             ;;
         *)
-            LAST_ERR="Unknown Action $ACTION "
+            MAIN_ERR="Unknown Action $ACTION "
     esac
 done
 
