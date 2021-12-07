@@ -3,14 +3,13 @@
 emulate -LR zsh
 
 fpath=(./functions $fpath)
-echo "loading functions from $fpath\n"
-
 autoload -U ${fpath[1]}/*(:t)
 
 APP="${0:t:r}"
-MAIN_ERR=""
- 
-message "$APP running in $(ps -o args= -p $$ )"
+
+message "loading functions from \n$(print -l $fpath)\n"
+message "$APP running in $(ps -o args= -p $$ )\n "
+read -k 1 "dummy?press any key to begin ... "
 
 function displayMenu() {
     clear
@@ -25,6 +24,7 @@ if [[ ! -d data/memos ]]; then
     mkdir data/memos
 fi
 
+MAIN_ERR=""
 while [ true ]
 do
     displayMenu

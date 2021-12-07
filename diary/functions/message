@@ -1,0 +1,5 @@
+# Write a message to stderr
+
+emulate -LR zsh
+
+echo "$APP: $@" >&2
