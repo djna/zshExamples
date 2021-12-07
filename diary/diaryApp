@@ -1,0 +1,47 @@
+#!/bin/zsh
+
+fpath=(./functions $fpath)
+echo "loading functions from $fpath"
+
+autoload -U ${fpath[1]}/*(:t)
+
+APP="${0:t:r}"
+MAIN_ERR=""
+ 
+message "$APP running in $(ps -o args= -p $$ )"
+
+function displayMenu() {
+    #clear
+    echo "$APP actions: Quit"
+}
+
+if [[ ! -d data ]]; then
+    mkdir data
+fi
+
+if [[ ! -d data/memos ]]; then
+    mkdir data/memos
+fi
+
+while [ true ]
+do
+    displayMenu
+
+    read "ACTION?${MAIN_ERR}Action "
+    MAIN_ERR=""
+
+    case "${ACTION:u}" in
+        Q|QUIT)
+            read -q "CONFIRM?Quit? (y/n) " CONFIRM
+            if [[ "$CONFIRM" = "y" ]]; then 
+                echo "\n\n${0:t} terminating on request\n\n"
+                exit 0 
+            else
+                continue
+            fi
+            ;;
+        *)
+            MAIN_ERR="Unknown Action $ACTION "
+    esac
+done
+
