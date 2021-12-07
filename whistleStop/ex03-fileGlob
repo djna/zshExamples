@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+emulate -LR zsh
+
+# hierqrchy specification 
+spec=**/*
+
+# key ideas:
+# use $() to assign output
+# use { } and 2> to redirect stderr
+# && and ||  
+list=$( { print $~spec(.:P)  } 2>/dev/null) && echo "found $list" || echo "did not match $spec"

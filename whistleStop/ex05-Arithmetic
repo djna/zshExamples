@@ -1,0 +1,39 @@
+#!/bin/zsh
+
+emulate -LR zsh
+
+
+#
+function printAll(){
+    echo "$1 A=$A, B=$B, C=$C, X=$X\n"
+}
+
+A=15
+B=3
+C=120
+
+typeset -i X
+
+printAll
+
+X=$(( C - (A * B )))
+
+printAll
+
+(( X++, A+=B ))
+
+printAll
+
+if (( A > B)); then
+    printAll "A is bigger than B"
+else
+    printAll "A is smaller than B"
+fi
+
+
+
+
+
+
+
+

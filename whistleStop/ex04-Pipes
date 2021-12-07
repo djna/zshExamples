@@ -1,0 +1,30 @@
+#!/bin/zsh
+
+emulate -LR zsh
+
+
+#
+function countWordsReturnCode() {
+    local file=${1?"no file specified"}
+    wordCount=$(wc -w $file | sed 's/^ *//' | cut -d " " -f 1)
+   
+    return $wordCount
+}
+
+function countWordsStdout() {
+    local file=${1?"no file specified"}
+    wc -w $file | sed 's/^ *//' | cut -d " " -f 1
+}
+
+fileName=${1:="functions/message"}
+
+countWordsReturnCode $fileName
+rc=$?
+echo "This script has $rc words\n"
+         
+result=$( countWordsStdout $fileName )
+rc=$?
+
+echo "This script has $result words, rc was $rc"
+
+
