@@ -1,0 +1,11 @@
+#!/bin/zsh
+
+emulate -LR zsh
+
+fpath=(./functions $fpath)
+autoload -U ${fpath[1]}/*(:t)
+
+APP="${0:t:r}"
+
+message "loading functions from \n$(print -l $fpath)\n"
+message "$APP running in $(ps -o args= -p $$ )\n "
