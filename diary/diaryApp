@@ -177,15 +177,15 @@ function listEntries() {
 
 function addEntry() {
 
-    read "TODO?Todo Text (empty to return to menu) "
-    CLEAN_TODO=$(echo "$TODO" | tr -s -c "[:alnum:]" " ")
+    read "ENTRY?Diary Entry Text (empty to return to menu) "
+    CLEAN_ENTRY=$(echo "$ENTRY" | tr -s -c "[:alnum:]" " ")
 
-    if [[ -z "$CLEAN_TODO" ]]; then
+    if [[ -z "$CLEAN_ENTRY" ]]; then
       return
     fi
     
     NOW=$(date +%s)
-    echo "$NOW,$CLEAN_TODO" > data/"$NOW".csv
+    echo "$NOW,$CLEAN_ENTRY" > data/"$NOW".csv
 }
 
 
