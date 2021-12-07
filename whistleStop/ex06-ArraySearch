@@ -1,0 +1,26 @@
+#!/bin/zsh
+
+emulate -LR zsh
+
+spec=**/*
+
+list=( $~spec(.:P) )
+
+print "last few\n$( print -l ${list[-3,-1]} )"
+
+criterion="*04*"
+print "\nsearch for item $criterion\n ${list[(r)$criterion]}"
+print "\nindex item $criterion = ${list[(i)$criterion]}"
+
+found=${list[(r)$criterion]}
+print "found $(print $~found(:t)) "
+
+
+
+
+
+
+
+
+
+
