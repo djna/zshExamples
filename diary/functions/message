@@ -1,4 +1,4 @@
 
 # Write a message to stderr
 
-echo "$APP: $@" 
+echo "$APP: $@" >&2
