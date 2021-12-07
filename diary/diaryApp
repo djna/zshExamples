@@ -1,7 +1,9 @@
 #!/bin/zsh
 
+emulate -LR zsh
+
 fpath=(./functions $fpath)
-echo "loading functions from $fpath"
+echo "loading functions from $fpath\n"
 
 autoload -U ${fpath[1]}/*(:t)
 
@@ -11,7 +13,7 @@ MAIN_ERR=""
 message "$APP running in $(ps -o args= -p $$ )"
 
 function displayMenu() {
-    #clear
+    clear
     echo "$APP actions: Quit"
 }
 
