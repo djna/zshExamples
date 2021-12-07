@@ -1,0 +1,18 @@
+#!/bin/zsh
+
+function myFunction(){
+     print "entry to function: ${X}"
+     X="changed"
+     print "after assignmentn: ${X}"
+}
+
+X="myString"
+
+print "original ${X}"
+
+myFunction
+
+print "after function call ${X}"
+
+
+
