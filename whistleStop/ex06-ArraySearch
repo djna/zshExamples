@@ -1,20 +1,30 @@
-#!/bin/zsh
+#!/bin/bash
 
-emulate -LR zsh
 
-spec=**/*
 
-list=( $~spec(.:P) )
+spec="data/*"
 
-print "last few\n$( print -l ${list[-3,-1]} )"
+list=($( ls  $spec ))
 
-criterion="*04*"
-print "\nsearch for item $criterion\n ${list[(r)$criterion]}"
-print "\nindex item $criterion = ${list[(i)$criterion]}"
+echo "all  ${list[@]} "
+echo "array with ${#list[@]} items"
+echo "first item ${list[0]} "
+echo "last item ${list[-1]} "
+echo "-2 item ${list[-2]} "
 
-found=${list[(r)$criterion]}
-print "found $(print $~found(:t)) "
+declare -A wordcount
+for f in ${list[@]}
+do
+   wordcount[$f]=$(wc -w $f | sed 's/^ *//' | cut -d " " -f 1)
+done
 
+echo "counts ${wordcount[@]}"
+
+# Note: zsh has capability to search arrays and return items or indexes
+
+ for i in "${!wordcount[@]}"; do
+     echo $i "<->" ${wordcount[$i]}
+ done
 
 
 

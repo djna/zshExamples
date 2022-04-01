@@ -1,11 +1,11 @@
-#!/bin/zsh
+#!/bin/bash
 
-emulate -LR zsh
+
 
 
 #
 function printAll(){
-    echo "$1 A=$A, B=$B, C=$C, X=$X\n"
+    echo "$1 A=$A, B=$B, C=$C, X=$X"
 }
 
 A=15

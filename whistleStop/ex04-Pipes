@@ -1,9 +1,8 @@
-#!/bin/zsh
+#!/bin/bash
 
-emulate -LR zsh
+# Functions and pipes, return coodes and output
 
-
-#
+# Data in return code fro function - not recommended
 function countWordsReturnCode() {
     local file=${1?"no file specified"}
     wordCount=$(wc -w $file | sed 's/^ *//' | cut -d " " -f 1)
@@ -11,12 +10,13 @@ function countWordsReturnCode() {
     return $wordCount
 }
 
+# data in stdout, with rc indicating overall status
 function countWordsStdout() {
     local file=${1?"no file specified"}
     wc -w $file | sed 's/^ *//' | cut -d " " -f 1
 }
 
-fileName=${1:="functions/message"}
+fileName=${1:-"example.txt"}
 
 countWordsReturnCode $fileName
 rc=$?
@@ -26,5 +26,9 @@ result=$( countWordsStdout $fileName )
 rc=$?
 
 echo "This script has $result words, rc was $rc"
+
+echo 'demo ${ ? } behaviour'
+countWordsReturnCode
+echo "never reached"
 
 
