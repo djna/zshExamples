@@ -9,15 +9,24 @@ async function processLineByLine() {
     input: fileStream,
     crlfDelay: Infinity
   });
-  // Note: we use the crlfDelay option to recognize all instances of CR LF
-  // ('\r\n') in input.txt as a single line break.
 
-  let regex = /\d+/;
+  let regex = /(?<first>\d)(?<second>\d+)/g;
   for await (const line of rl) {
-    // Each line in input.txt will be successively available here as `line`.
-    if ( regex.match($line)){
-        console.log(`${line} matches ${regex.source}`);
+  
+    console.log(`Line: ${line}`);
+    let result = regex.exec(line);
+    if ( ! result ){
+        console.log("No match");
+    } else {
+        do {
+            for (let i = 0; i < result.length; i++) {
+              console.log(`group ${result[i]}`)
+            }
+            console.log(`first: ${result.groups.first} second: ${result.groups.second}`)
+      
+        } while (result = regex.exec(line))
     }
+
   }
 }
 
