@@ -17,10 +17,8 @@ github:
     # add a "Review in Gitpod" button to the pull request's description (defaults to false)
     addBadge: true
     tasks:
-      - init: echo "I want left"
-        name: "Lefty"
-        command: echo 'left'
-      - init: echo "I want right"
-        name: "Dexter"
-        command: echo 'right'
-        openMode: split-right
+    - name: "Lefty"
+      command: echo 'left'
+    - name: "Dexter"
+      command: echo 'right'
+      openMode: split-right
