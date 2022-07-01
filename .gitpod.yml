@@ -18,14 +18,16 @@ github:
     addBadge: true
 
 tasks:
-    - name: "Lefty"
+    - name: "Express"
       before: |
           echo "In $(pwd)"
       init: |
-          echo "Could npm install here"
+          npm install express
+          gp sync-done installation
       command: |
-          echo 'left'
-    - name: "Dexter"
+          gp sync-await installation
+          node server.js
+    - name: "Client"
       command: |
-          echo 'right'
+          echo 'Client'
       openMode: split-right
