@@ -1,5 +1,10 @@
+
+image:
+  file: .gitpod.Dockerfile
+
 ports:
 - port: 3000
+
 github:
   prebuilds:
     # enable for the default branch (defaults to true)
