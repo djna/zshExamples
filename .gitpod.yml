@@ -23,11 +23,11 @@ tasks:
           echo "In $(pwd)"
       init: |
           npm install express
-          gp sync-done installation
-      command: |
-          gp sync-await installation
+      command: |              
           node server.js
+          gp sync-done installation
     - name: "Client"
       command: |
+          gp sync-await installation
           echo 'Client'
       openMode: split-right
