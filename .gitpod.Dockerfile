@@ -1,6 +1,6 @@
 
 # You can find the new timestamped tags here: https://hub.docker.com/r/gitpod/workspace-base/tags
-FROM gitpod/workspace-base:latest
+FROM gitpod/workspace-full:latest
 
 # Install custom tools, runtime, etc.
 # base image only got `apt` as the package manager
