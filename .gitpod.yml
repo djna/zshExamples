@@ -22,9 +22,9 @@ tasks:
       before: |
           echo "In $(pwd)"
       init: |
-          npm install express
-          gp sync-done installation
-      command: |              
+          npm install express    
+      command: |       
+          gp sync-done installation       
           node server.js       
     - name: "Client"
       command: |
