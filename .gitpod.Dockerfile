@@ -7,5 +7,4 @@ FROM gitpod/workspace-base:latest
 # install-packages is a wrapper for `apt` that helps skip a few commands in the docker env.
 RUN sudo install-packages dos2unix
 
-RUN sudo install-packages unix2dos
 
