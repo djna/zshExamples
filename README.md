@@ -16,13 +16,13 @@ Some of these branches can be opened in gitpod
 </a>
 
 <a href="https://gitpod.io/#https://github.com/djna/zshExamples/tree/activeMQ">
-    <p>Express : activeMQ server example</p>
+    <p>ActiveMQ : example of download, install and run</p>
 </a>
 
 <a href="https://gitpod.io/#https://github.com/djna/zshExamples/tree/jsregex">
-    <p>Express : JavaScript regex</p>
+    <p>JS Regex : explore regex with JavaScript</p>
 </a>
 
 <a href="https://gitpod.io/#https://github.com/djna/zshExamples/tree/pyregex">
-    <p>Express : Python regex</p>
+    <p>Py Regex : explore regex with Python</p>
 </a>
