@@ -3,6 +3,7 @@ image:
   file: .gitpod.Dockerfile
 
 ports:
+- port: 8161
 - port: 3000
 
 github:
