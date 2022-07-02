@@ -27,7 +27,7 @@ tasks:
       before: |
           echo "PATH=${PATH}"    
       command: |       
-          activeMQ start             
+          activemq start             
     - name: "Develop"
       command: |
-          activeMQ status
+          activemq status
