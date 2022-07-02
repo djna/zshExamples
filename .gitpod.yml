@@ -23,16 +23,11 @@ github:
     addBadge: true
 
 tasks:
-    - name: "Express"
+    - name: "ActiveMQ"
       before: |
-          echo "In $(pwd)"
-      init: |
-          npm install express    
+          echo "PATH=${PATH}"    
       command: |       
-          gp sync-done installation       
-          node server.js       
-    - name: "Client"
+          activeMQ start             
+    - name: "Develop"
       command: |
-          gp sync-await installation
-          echo 'Client'
-      openMode: split-right
+          activeMQ status

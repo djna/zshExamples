@@ -11,3 +11,5 @@ RUN wget -O activeMQ.tar.gz 'https://www.apache.org/dyn/closer.cgi?filename=/act
 
 RUN gunzip activeMQ.tar.gz && tar -xvf activeMQ.tar
 
+ENV PATH="/home/gitpod/apache-activemq-5.17.1/bin:$PATH"
+
