@@ -1,0 +1,20 @@
+accept
+HA5 8RA
+B79 7ND
+SW1A 1AA
+L1 6XH
+RH10 8GF
+HA58RA
+SW1A 1AA RH10 8GF HA58RA
+GIR 0AA
+
+reject 
+(bad outward)
+ha5 8ra
+7A5 3FF
+HAA4 9RD
+HH 5DD
+(bad inward)
+HA5 OFF
+CH3 8K0
+H3 8K0
