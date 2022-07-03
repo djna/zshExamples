@@ -26,6 +26,7 @@ async function processLineByLine() {
       
         } while (result = regex.exec(line))
     }
+    console.log(`=============================\n`);
 
   }
 }
