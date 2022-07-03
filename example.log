@@ -1,0 +1,7 @@
+Jul 29 06:19:16 u5-basenode-101 ACE[18652]: IBM App Connect Enterprise v110010 (BRK.MAIN) [Thread 19759] (Msg 3/6) BIP2488E:  (.Create_Message_Compute1.Main, 41.5) Error detected whilst executing the SQL statement 'PROPAGATE TO TERMINAL 'out3
+
+Jul 29 06:19:16 u5-basenode-101 ACE[18652]: IBM App Connect Enterprise v110010 (BRK.MAIN.TLM.SVR01) [Thread 19759] (Msg 4/6) BIP2230E: Error detected whilst processing a message in node 'Create_Message.Create_Message'.
+
+Jul 29 06:19:47 u5-basenode-101 ACE[18652]: IBM App Connect Enterprise v110010 (BRK.MAIN.TLM.SVR01) [Thread 19759] (Msg 3/3) BIP2667E: An error occurred in 'Create_Message.Q1' when writing message to queue 'Q1' on queue manager 'QM.MAIN'. State = '-1' 'MQW102' '2053' '’
+
+Aug  1 06:20:47 u5-basenode-101 ACE[18652]: IBM App Connect Enterprise v110010 (BRK.MAIN.TLM.SVR01) [Thread 19759] (Msg 1/6) BIP2232E: Error detected whilst handling a previous error in node 'Create_Message.Q1’.
