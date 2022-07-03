@@ -1,0 +1,18 @@
+single repeat
+This is is a test
+cat dog dog cat dog
+
+single repeat if case ignored
+This this test is a test
+This is IS a test
+
+many repeats
+This test test is is
+I'll I'll be be back back in in a a bit bit.
+
+No repeats
+This is a test
+This test is a test
+This test is a test tester
+This nottest test is something
+hello world hello world
